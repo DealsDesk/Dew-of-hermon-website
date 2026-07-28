@@ -1,3 +1,17 @@
+/**
+ * Resend-backed contact handler — INACTIVE on the current hosting.
+ *
+ * The site is exported as static files for Hostinger shared hosting, which has
+ * no Node runtime, so this route cannot run there. It lives in a `_`-prefixed
+ * folder, which the App Router excludes from routing, so it neither serves a
+ * request nor blocks the static export.
+ *
+ * To bring it back on a host that runs Node (Vercel, a VPS, Hostinger VPS):
+ *   1. Move this file to `app/api/contact/route.ts`
+ *   2. Drop `output: "export"` from next.config.mjs
+ *   3. Point ContactForm back at `/api/contact` (see its Web3Forms comment)
+ *   4. Set RESEND_API_KEY and CONTACT_TO_EMAIL in the host's environment
+ */
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 

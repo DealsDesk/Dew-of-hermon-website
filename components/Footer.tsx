@@ -67,7 +67,7 @@ export default function Footer() {
             Contact
           </h4>
           <ul className="mt-4 space-y-3 font-body text-sm text-white/70">
-            <li>hello@dewofhermon.co.za</li>
+            <li>dewofhermon225@gmail.com</li>
             <li>+27 00 000 0000</li>
             <li>Mon – Sat, 8am – 5pm</li>
           </ul>

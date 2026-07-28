@@ -4,6 +4,21 @@ import { useState, FormEvent } from "react";
 
 type Status = "idle" | "loading" | "sent" | "error";
 
+/**
+ * Static hosting has no server to post to, so the form submits straight from
+ * the browser to Web3Forms, which relays it to the practice inbox. The access
+ * key is public by design — it only permits sending to the address that
+ * registered it. (The previous Resend handler is kept at
+ * app/_node-only/contact-route.ts for hosts that run Node.)
+ */
+const ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY ?? "";
+
+const INTEREST_LABELS: Record<string, string> = {
+  scan: "Book a Body Scan",
+  supplements: "Ask about Green World packages",
+  other: "Something else",
+};
+
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState("");
@@ -17,17 +32,27 @@ export default function ContactForm() {
     const data = Object.fromEntries(new FormData(form).entries());
 
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: ACCESS_KEY,
+          subject: `New enquiry from ${data.name} — ${
+            INTEREST_LABELS[String(data.interest)] ?? data.interest
+          }`,
+          from_name: "Dew of Hermon website",
+          ...data,
+        }),
       });
 
       const result = await res.json().catch(() => ({}));
 
-      if (!res.ok) {
+      if (!res.ok || !result.success) {
         setErrorMessage(
-          result.error || "Something went wrong. Please try again or call us."
+          "We couldn't send your message just now. Please call or email us and we'll get straight back to you."
         );
         setStatus("error");
         return;
@@ -41,6 +66,31 @@ export default function ContactForm() {
       );
       setStatus("error");
     }
+  }
+
+  // Without a key the form would fail silently on every submission, so show
+  // the direct contact details instead of a control that cannot work.
+  if (!ACCESS_KEY) {
+    return (
+      <div className="flex h-full flex-col justify-center py-6 text-center">
+        <span className="eyebrow justify-center">Get in touch</span>
+        <h3 className="mt-4 font-display text-2xl font-medium text-primary-dark">
+          Call or email to book
+        </h3>
+        <p className="mx-auto mt-3 max-w-xs font-body text-sm leading-relaxed text-ink/65">
+          We&rsquo;ll confirm a time that suits you and answer any questions
+          before your scan.
+        </p>
+        <div className="mt-6 flex flex-col gap-3">
+          <a href="tel:+27000000000" className="btn-primary">
+            +27 00 000 0000
+          </a>
+          <a href="mailto:dewofhermon225@gmail.com" className="btn-ghost">
+            dewofhermon225@gmail.com
+          </a>
+        </div>
+      </div>
+    );
   }
 
   if (status === "sent") {
@@ -62,8 +112,8 @@ export default function ContactForm() {
     <form onSubmit={handleSubmit} className="grid gap-5">
       {/* Honeypot — hidden from real visitors, bots tend to fill every field */}
       <input
-        type="text"
-        name="company"
+        type="checkbox"
+        name="botcheck"
         tabIndex={-1}
         autoComplete="off"
         className="hidden"

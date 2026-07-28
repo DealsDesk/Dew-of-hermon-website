@@ -3,7 +3,6 @@ import { display, body } from "./fonts";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import CloudReveal from "@/components/CloudReveal";
 
 export const metadata: Metadata = {
   title: "Dew of Hermon | Health & Wellness",
@@ -19,7 +18,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body>
-        <CloudReveal />
         <Nav />
         <main className="pt-24">{children}</main>
         <Footer />

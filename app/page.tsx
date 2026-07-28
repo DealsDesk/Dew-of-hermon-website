@@ -1,4 +1,5 @@
 import AnimatedLogo from "@/components/AnimatedLogo";
+import CloudReveal from "@/components/CloudReveal";
 import MistMountains from "@/components/MistMountains";
 import GlassCard from "@/components/GlassCard";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -44,6 +45,10 @@ const PACKAGES = [
 export default function HomePage() {
   return (
     <>
+      {/* Home only — the mist needs the sticky hero's scroll room to clear, and
+          fogging a form or a services list would just be in the way. */}
+      <CloudReveal />
+
       {/* HERO — the tall wrapper gives the mist room to clear while the sticky
           section holds the hero in place, so the reveal happens on a page that
           isn't sliding away underneath it. */}

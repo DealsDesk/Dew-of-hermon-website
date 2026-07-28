@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 const DETAILS = [
   { label: "Phone", value: "+27 00 000 0000" },
-  { label: "Email", value: "hello@dewofhermon.co.za" },
+  { label: "Email", value: "dewofhermon225@gmail.com" },
   { label: "Hours", value: "Mon – Sat, 8am – 5pm" },
   { label: "Location", value: "Available by appointment" },
 ];
