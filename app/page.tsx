@@ -44,8 +44,11 @@ const PACKAGES = [
 export default function HomePage() {
   return (
     <>
-      {/* HERO */}
-      <section className="relative flex min-h-[92vh] flex-col items-center justify-center overflow-hidden px-6 pb-28 pt-12 text-center sm:px-10">
+      {/* HERO — the tall wrapper gives the mist room to clear while the sticky
+          section holds the hero in place, so the reveal happens on a page that
+          isn't sliding away underneath it. */}
+      <div className="relative h-[190vh]">
+      <section className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden px-6 pb-28 pt-12 text-center sm:px-10">
         <MistMountains className="opacity-90" parallax band="68%" />
         <div
           className="pointer-events-none absolute inset-0"
@@ -82,11 +85,8 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-ink/40 sm:flex">
-          <span className="font-body text-[11px] uppercase tracking-[0.3em]">Scroll</span>
-          <span className="h-10 w-px animate-pulse bg-ink/30" />
-        </div>
       </section>
+      </div>
 
       {/* HOW IT WORKS */}
       <section className="section relative bg-white">
