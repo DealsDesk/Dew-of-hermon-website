@@ -45,8 +45,8 @@ export default function HomePage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative flex min-h-[92vh] flex-col items-center justify-center overflow-hidden px-6 pb-16 pt-12 text-center sm:px-10">
-        <MistMountains className="opacity-90" />
+      <section className="relative flex min-h-[92vh] flex-col items-center justify-center overflow-hidden px-6 pb-28 pt-12 text-center sm:px-10">
+        <MistMountains className="opacity-90" parallax band="68%" />
         <div
           className="pointer-events-none absolute inset-0"
           style={{

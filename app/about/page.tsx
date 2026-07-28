@@ -33,7 +33,7 @@ export default function AboutPage() {
   return (
     <>
       <section className="relative overflow-hidden px-6 pb-20 pt-16 text-center sm:px-10">
-        <MistMountains className="opacity-50" />
+        <MistMountains className="opacity-30" />
         <div className="container-narrow relative">
           <span className="eyebrow justify-center">Our Story</span>
           <h1 className="mx-auto mt-4 max-w-2xl text-balance font-display text-4xl font-medium leading-tight text-primary-dark sm:text-5xl">
