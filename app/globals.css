@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg text-ink font-body antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+  }
+
+  ::selection {
+    @apply bg-lavender-deep text-white;
+  }
+}
+
+@layer components {
+  /* Glassmorphism surface used across cards, nav, modals */
+  .glass {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+  }
+
+  .glass-dark {
+    background: rgba(11, 10, 13, 0.55);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-primary/70 font-body font-semibold;
+  }
+
+  .btn {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-full px-8 py-3.5 font-body text-sm font-semibold tracking-wide transition-all duration-300 ease-out;
+  }
+
+  .btn-primary {
+    @apply btn bg-black text-white hover:bg-primary-dark hover:shadow-glass-lg hover:-translate-y-0.5;
+  }
+
+  .btn-ghost {
+    @apply btn glass text-primary-dark hover:bg-white/70 hover:-translate-y-0.5;
+  }
+
+  .section {
+    @apply px-6 py-24 sm:px-10 lg:px-20;
+  }
+
+  .container-narrow {
+    @apply mx-auto max-w-6xl;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
