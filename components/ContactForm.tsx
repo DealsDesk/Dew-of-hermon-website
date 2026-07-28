@@ -2,12 +2,45 @@
 
 import { useState, FormEvent } from "react";
 
-export default function ContactForm() {
-  const [status, setStatus] = useState<"idle" | "sent">("idle");
+type Status = "idle" | "loading" | "sent" | "error";
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+export default function ContactForm() {
+  const [status, setStatus] = useState<Status>("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setStatus("sent");
+    setStatus("loading");
+    setErrorMessage("");
+
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        setErrorMessage(
+          result.error || "Something went wrong. Please try again or call us."
+        );
+        setStatus("error");
+        return;
+      }
+
+      setStatus("sent");
+      form.reset();
+    } catch {
+      setErrorMessage(
+        "We couldn't reach the server. Please check your connection and try again."
+      );
+      setStatus("error");
+    }
   }
 
   if (status === "sent") {
@@ -27,6 +60,16 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="grid gap-5">
+      {/* Honeypot — hidden from real visitors, bots tend to fill every field */}
+      <input
+        type="text"
+        name="company"
+        tabIndex={-1}
+        autoComplete="off"
+        className="hidden"
+        aria-hidden="true"
+      />
+
       <div className="grid gap-5 sm:grid-cols-2">
         <label className="flex flex-col gap-2">
           <span className="font-body text-xs font-semibold uppercase tracking-wide text-ink/50">
@@ -94,8 +137,18 @@ export default function ContactForm() {
         />
       </label>
 
-      <button type="submit" className="btn-primary mt-2 w-full">
-        Send Message
+      {status === "error" && (
+        <p role="alert" className="font-body text-sm text-red-600">
+          {errorMessage}
+        </p>
+      )}
+
+      <button
+        type="submit"
+        disabled={status === "loading"}
+        className="btn-primary mt-2 w-full disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {status === "loading" ? "Sending…" : "Send Message"}
       </button>
     </form>
   );
